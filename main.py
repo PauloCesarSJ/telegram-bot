@@ -1,14 +1,19 @@
-from telegram.ext import Application 
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
-def main(): 
-    """
-    Handles the inirial launch of the promra (entry point).
-    """
+async def reply(update, context):
+    await update.message.reply_text("Hello there!")
 
-    token = ""
-    Application = Application.builder().token(token).concurrent_updates(True).read_timeout(30).write_timeout(30).build()
+def main():
+    """
+    Handles the initial launch of the program (entry point).
+    """
+    token = "YOUR_BOT_TOKEN_HERE"
+    application = Application.builder().token(token).concurrent_updates(True).read_timeout(30).write_timeout(30).build()
+    application.add_handler(MessageHandler(filters.TEXT, reply))
+    application.add_handler(CommandHandler("hello", reply))
+    application.add_handler(MessageHandler(filters.PHOTO, reply)) # new photo handler here
     print("Telegram Bot started!", flush=True)
-    Application.run_polling()
+    application.run_polling()
 
-    if __name__ == "__main__":
-        main()
+if __name__ == '__main__':
+    main()
